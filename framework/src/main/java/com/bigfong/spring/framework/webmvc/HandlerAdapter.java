@@ -63,9 +63,9 @@ public class HandlerAdapter {
 
         //3.构造实参列表
         Object[] paramValues = new Object[paramTypes.length];
-
+        //reqParameterMap.entrySet() 不包含HttpServletRequest、HttpServletResponse
         for (Map.Entry<String, String[]> param : reqParameterMap.entrySet()) {
-            String value = Arrays.toString(param.getValue()).replaceAll("\\[|\\]]", "").replaceAll("\\s", "");
+            String value = Arrays.toString(param.getValue()).replaceAll("\\[|\\]", "").replaceAll("\\s", "");
             if (!paramMapping.containsKey(param.getKey())) {
                 continue;
             }

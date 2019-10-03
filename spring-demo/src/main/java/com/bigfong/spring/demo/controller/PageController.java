@@ -28,7 +28,7 @@ public class PageController {
         String result = queryService.query(name);
         Map<String,Object> model = new HashMap<>();
         model.put("name",name);
-        model.put("data",request);
+        model.put("data",result);
         model.put("token","123456");
         return new ModelAndView("first.html",model);
     }

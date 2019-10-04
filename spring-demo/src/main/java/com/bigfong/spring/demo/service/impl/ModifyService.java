@@ -10,8 +10,9 @@ import com.bigfong.spring.framework.annotation.Service;
 @Service
 public class ModifyService implements IModifyService {
     @Override
-    public String add(String name, String addr) {
-        return "ModifyService add:name=" + name + ",addr=" + addr;
+    public String add(String name, String addr) throws Exception{
+        throw new Exception("抛出异常，测试切面通知是否生效");
+        //return "ModifyService add:name=" + name + ",addr=" + addr;
     }
 
     @Override

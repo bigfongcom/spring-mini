@@ -31,6 +31,17 @@ public class TestController {
         return out(response,result);
     }
 
+    @RequestMapping("/add")
+    public ModelAndView add(HttpServletRequest request, HttpServletResponse response, @RequestParam("name") String name, @RequestParam("addr") String addr){
+        String result = null;
+        try {
+            result = modifyService.add(name,addr);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return out(response,result);
+    }
+
     private ModelAndView out(HttpServletResponse response, String result) {
         try {
             response.getWriter().write(result);

@@ -3,6 +3,11 @@ package com.bigfong.spring.framework.context;
 import com.bigfong.spring.framework.annotation.Autowired;
 import com.bigfong.spring.framework.annotation.Controller;
 import com.bigfong.spring.framework.annotation.Service;
+import com.bigfong.spring.framework.aop.AopConfig;
+import com.bigfong.spring.framework.aop.AopProxy;
+import com.bigfong.spring.framework.aop.CglibAopProxy;
+import com.bigfong.spring.framework.aop.JdkDynamicAopProxy;
+import com.bigfong.spring.framework.aop.support.AdvisedSupport;
 import com.bigfong.spring.framework.beans.BeanWrapper;
 import com.bigfong.spring.framework.beans.config.BeanDefinition;
 import com.bigfong.spring.framework.beans.config.BeanPostProcessor;
@@ -190,6 +195,15 @@ public class ApplicationContext extends DefaultListableBeanFactory implements Be
             }else{
                 Class<?> clazz = Class.forName(className);
                 instance = clazz.newInstance();
+
+                //AOP
+                AdvisedSupport config = instantionAopConfig(beanDefinition);
+                config.setTargetClass(clazz);
+                config.setTarget(instance);
+                if (config.pointCutMatch()){
+                    instance = createProxy(config).getProxy();
+                }
+
                 this.factoryBeanObjectCache.put(className,instance);
             }
             return instance;
@@ -197,6 +211,27 @@ public class ApplicationContext extends DefaultListableBeanFactory implements Be
             e.printStackTrace();
             return null;
         }
+    }
+
+    private AopProxy createProxy(AdvisedSupport config) {
+        Class targetClass = config.getTargetClass();
+        if (targetClass.getInterfaces().length>0){
+            return new JdkDynamicAopProxy(config);
+        }
+        return new CglibAopProxy(config);
+    }
+
+
+    private AdvisedSupport instantionAopConfig(BeanDefinition beanDefinition) throws Exception{
+        AopConfig config = new AopConfig();
+        config.setPointCut(reader.getConfig().getProperty("pointCut"));
+        config.setAspectClass(reader.getConfig().getProperty("aspectClass"));
+        config.setAspectBefore(reader.getConfig().getProperty("aspectBefore"));
+        config.setAspectAfter(reader.getConfig().getProperty("aspectAfter"));
+        config.setAspectAfterThrow(reader.getConfig().getProperty("aspectAfterThrow"));
+        config.setAspectAfterThrowingName(reader.getConfig().getProperty("aspectAfterThrowingName"));
+
+        return new AdvisedSupport(config);
     }
 
     public String[] getBeanDefinitionNames(){

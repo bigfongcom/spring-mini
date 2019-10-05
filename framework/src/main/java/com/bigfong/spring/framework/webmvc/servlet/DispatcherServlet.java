@@ -216,18 +216,36 @@ public class DispatcherServlet extends HttpServlet {
         try {
             doDispatch(req,resp);
         }catch (Exception e ){
-            resp.getWriter().write("<font size='25' color='blue'>500 Exception</font><br>Detail:<br/>"+
+            view500(req,resp,e);
+        }
+    }
+
+    private void view500(HttpServletRequest req, HttpServletResponse resp, Exception e) {
+        //判断500文件是否存在
+
+         /*resp.getWriter().write("<font size='25' color='blue'>500 Exception</font><br>Detail:<br/>"+
                     Arrays.toString(e.getStackTrace()).replaceAll("\\[|\\]]","").replaceAll("\\s","\r\n")+
             "<font color='greeb'><br><i>Copyright@bigfong</i></font>");
-            e.printStackTrace();
+            e.printStackTrace();*/
+        try {
+            Map<String,Object> model = new HashMap<>();
+            model.put("detail",e.getCause());
+            model.put("stackTrace",Arrays.toString(e.getStackTrace()).replaceAll("\\[|\\]]","").replaceAll("\\s","\r\n"));//System.err
+            processDispatchResult(req,resp,new ModelAndView("500",model));
+        } catch (Exception e1) {
+            e1.printStackTrace();
         }
+    }
+
+    private void view404(HttpServletRequest req, HttpServletResponse resp)  throws Exception{
+        processDispatchResult(req,resp,new ModelAndView("404"));
     }
 
     private void doDispatch(HttpServletRequest req, HttpServletResponse resp) throws Exception{
         //根据用户请求的URL来获得一个Handler
         HandlerMapping handler = getHandler(req);
         if (handler==null){
-            processDispatchResult(req,resp,new ModelAndView("404"));
+            view404(req,resp);
             return;
         }
         HandlerAdapter ha = getHandlerAdapter(handler);
@@ -236,6 +254,8 @@ public class DispatcherServlet extends HttpServlet {
         //输出
         processDispatchResult(req,resp,mv);
     }
+
+
 
 
     private void processDispatchResult(HttpServletRequest req, HttpServletResponse resp, ModelAndView mv) throws Exception{

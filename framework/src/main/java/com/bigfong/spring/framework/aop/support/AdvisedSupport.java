@@ -48,13 +48,13 @@ public class AdvisedSupport {
     }
 
     public List<Object> getInterceptorsAndDynamicInterceptionAdvice(Method method,Class<?> targetClass) throws Exception{
-        List<Object> cached = methodCache.get(method);
+        List<Object> cached = this.methodCache.get(method);
         //未缓存
         if (null == cached){
             Method m = targetClass.getMethod(method.getName(),method.getParameterTypes());
-            //cached = methodCache.get(m);
-            cached = new ArrayList<>();
-            cached.add(m);
+            cached = methodCache.get(m);
+            /*cached = new ArrayList<>();
+            cached.add(m);*/
             //存入缓存
             this.methodCache.put(m,cached);
         }

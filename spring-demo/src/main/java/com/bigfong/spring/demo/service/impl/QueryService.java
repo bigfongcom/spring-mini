@@ -1,6 +1,8 @@
 package com.bigfong.spring.demo.service.impl;
 
+import com.bigfong.spring.demo.service.IModifyService;
 import com.bigfong.spring.demo.service.IQueryService;
+import com.bigfong.spring.framework.annotation.Autowired;
 import com.bigfong.spring.framework.annotation.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +18,9 @@ import java.util.Date;
 public class QueryService implements IQueryService {
     private Logger logger = LoggerFactory.getLogger(QueryService.class);
 
+    //触发循环依赖
+    @Autowired
+    private IModifyService modifyService;
 
     @Override
     public String query(String name) {

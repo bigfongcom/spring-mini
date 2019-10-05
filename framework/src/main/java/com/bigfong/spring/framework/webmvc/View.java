@@ -71,7 +71,7 @@ public class View {
                 .replace("+","\\+").replace("|","\\|")
                 .replace("{","\\{").replace("}","\\}")
                 .replace("(","\\(").replace(")","\\)")
-                .replace("^","\\^")//.replace("$","\\$")
+                .replace("^","\\^").replace("$","\\$")
                 .replace("[","\\[").replace("]","\\]")
                 .replace("?","\\?").replace(",","\\,")
                 .replace(".","\\.").replace("&","\\&");

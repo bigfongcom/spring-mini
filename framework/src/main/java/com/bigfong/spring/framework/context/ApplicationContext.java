@@ -96,6 +96,7 @@ public class ApplicationContext extends DefaultListableBeanFactory implements Be
         }
     }
 
+    @Override
     public Object getBean(Class<?> beanClass) throws Exception {
         return getBean(beanClass.getName());
     }
@@ -112,6 +113,7 @@ public class ApplicationContext extends DefaultListableBeanFactory implements Be
      * @return
      * @throws Exception
      */
+    @Override
     public Object getBean(String beanName) throws Exception {
         BeanDefinition beanDefinition = super.beanDefinitionMap.get(beanName);
 
@@ -126,7 +128,7 @@ public class ApplicationContext extends DefaultListableBeanFactory implements Be
             //在实例初始化之前调用一次
             beanPostProcessor.postProcessBeforeInitialization(instance,beanName);
             BeanWrapper beanWrapper = new BeanWrapper(instance);
-            this.factoryBeanInstanceCache.put(beanName,beanWrapper);//记录所有被代理的类
+            this.factoryBeanInstanceCache.put(beanName,beanWrapper);//记录所有被代理的类,提前设置，可以解决循环依赖问题
             //在实例初始化之后调用一次
             beanPostProcessor.postProcessAfterInitialization(instance,beanName);
 
@@ -171,6 +173,14 @@ public class ApplicationContext extends DefaultListableBeanFactory implements Be
             }
             field.setAccessible(true);
             try {
+                //如果注入的对象未实例化，则初始化它
+                if (!this.factoryBeanInstanceCache.containsKey(autowiredBeanName)){
+                    try {
+                        this.getBean(autowiredBeanName);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
                 //为什么不用上面的beanName?
                 //设置对象instance上变量field的值为this.factoryBeanInstanceCache.get(autowiredBeanName).getWrappedInstance()
                 field.set(instance,this.factoryBeanInstanceCache.get(autowiredBeanName).getWrappedInstance());

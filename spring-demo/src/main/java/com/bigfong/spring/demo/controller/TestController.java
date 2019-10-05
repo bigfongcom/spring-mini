@@ -25,7 +25,7 @@ public class TestController {
     @Autowired
     IModifyService modifyService;
 
-    @RequestMapping("/query.json")
+    @RequestMapping("/query")
     public ModelAndView query(HttpServletRequest request, HttpServletResponse response, @RequestParam("name") String name){
         String result = queryService.query(name);
         return out(response,result);
@@ -38,6 +38,7 @@ public class TestController {
             result = modifyService.add(name,addr);
         } catch (Exception e) {
             e.printStackTrace();
+            result = e.getStackTrace().toString();
         }
         return out(response,result);
     }

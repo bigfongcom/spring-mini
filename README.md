@@ -10,6 +10,7 @@
 * 添加注解支持AOP
 * 400、500模板未定义处理
 * 引用第三方模板引擎
+* tomcat或者jetty嵌入实现jar包运行
 
 ### 2019-10-3
 * 设计IOC容器模块
@@ -31,7 +32,7 @@ git rm -r --cached .
 git add .
 git commit -m 'update .gitignore'
 
-https://blog.csdn.net/zhangkui0418/article/details/82977519
+https://blog.csdn.net/zhangkui0418/article/details/82977519<br>
 https://blog.csdn.net/weixin_34392435/article/details/91732390
 
 

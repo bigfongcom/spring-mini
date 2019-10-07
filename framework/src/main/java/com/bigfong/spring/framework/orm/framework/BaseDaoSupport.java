@@ -10,8 +10,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import javax.sql.DataSource;
 import java.io.Serializable;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import com.bigfong.spring.framework.orm.framework.EntityOperation.PropertyMapping;
+import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.PreparedStatementCreator;
 //import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
@@ -198,5 +206,119 @@ public abstract class BaseDaoSupport<T extends Serializable, PK extends Serializ
 
     private <T> Object doLoad(String tableName, String pkCloumn, Object pkValue, RowMapper<T> rowMapper) {
         return null;
+    }
+
+    private Map<String,Object> parse(T enity) {
+        return null;
+    }
+
+    /**
+     * 插入并返回ID
+     * @param enity
+     * @return
+     * @throws Exception
+     */
+    public PK insertAndReturnId(T enity) throws Exception{
+        return (PK)this.doInsertReturnKey(parse(enity));
+    }
+
+    private Serializable doInsertReturnKey(Map<String,Object> params) {
+        final List<Object> values = new ArrayList<>();
+        final String sql = makeSimpleInsertSql(getTableName(),params,values);
+        KeyHolder keyHolder = GenerratedKeyHolder();
+        final  JdbcTemplate jdbcTemplate = new JdbcTemplate(getDataSourceWrite());
+        try {
+            jdbcTemplate.update(new PreparedStatementCreator(){
+                @Override
+                public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
+                    PreparedStatement ps = connection.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
+                    for (int i = 0; i < values.size(); i++) {
+                        ps.setObject(i+1,values.get(i)==null?null:values.get(i));
+                    }
+                    return ps;
+                }
+            },keyHolder);
+        }catch (DataAccessException e){
+            logger.error("error",e);
+        }
+
+        if (keyHolder==null){
+            return "";
+        }
+
+        Map<String,Object> keys = keyHolder.getKeys();
+
+        if (keys==null || keys.size()==0 || keys.values().size()==0){
+            return "";
+        }
+        Object key = keys.values().toArray()[0];
+        if (key==null || !(key instanceof Serializable)){
+            return "";
+        }
+
+        if (key instanceof Number){
+            Class clazz = key.getClass();
+            return (clazz==int.class || clazz==Integer.class)?((Number)key).intValue():((Number)key).longValue();
+        }else if (key instanceof String){
+            return (String)key;
+        }else{
+            return (Serializable)key;
+        }
+    }
+
+
+    /**
+     * 插入一条记录
+     * @param entity
+     * @return
+     * @throws Exception
+     */
+    public boolean insert(T entity) throws Exception{
+        return this.doInsert(parse(entity));
+    }
+
+    private boolean doInsert(Map<String, Object> params) {
+        String sql = this.makeSimpleInsertSql(this.getTableName(),params);
+        int ret = this.jdbcTemplateWrite.update(sql,params.values().toArray());
+        return ret>0;
+    }
+
+    public int insertAll(List<T> list) throws Exception{
+        int count=0,len=list.size(),step=50000;
+        Map<String,PropertyMapping> pm = op.mappings;
+        int maxPage = (int) Math.ceil(len/step);
+        for (int i = 0; i < maxPage; i++) {
+            Page<T> page = pagination(list,i,step);
+            String sql = "insert into "+getTableName()+" ("+op.allColum+") values ";
+            StringBuffer valStr = new StringBuffer();
+            Object[] values = new Object[pm.size()*page.getRows().size()];
+            for (int j = 0; j < page.getRows().size(); j++) {
+                if (j>0&&j<page.getRows().size()){
+                    valStr.append(",");
+                }
+                valStr.append("(");
+                int k=0;
+                for (PropertyMapping p : pm.values()) {
+                    values[(j*pm.size()+k)] = p.getter.invoke(page.getRows().get(j));
+                    if (k>0 && k<pm.size()){
+                        valStr.append(",");
+                    }
+                    valStr.append("?");
+                    k++;
+                }
+                valStr.append(")");
+            }
+            int result = this.jdbcTemplateWrite.update(sql+valStr.toString(),valStr);
+            count +=result;
+        }
+        return count;
+    }
+
+    @Override
+    public boolean delete(T entity) throws Exception {
+        return this.doDelete(op.pkField.get(entity))>0;
+    }
+
+    private boolean doDelete(Object o) {
     }
 }

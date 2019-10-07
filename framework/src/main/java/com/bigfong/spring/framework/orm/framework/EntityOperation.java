@@ -196,7 +196,7 @@ public class EntityOperation<T> {
         }
     }
 
-    class PropertyMapping {
+   public class PropertyMapping {
         final boolean insertable;
         final boolean updatable;
         final String columnName;

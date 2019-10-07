@@ -35,13 +35,13 @@
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.springframework/spring-beans -->
-        <!--<dependency>
+        <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-jdbc</artifactId>
             <version>5.0.0.RELEASE</version>
         </dependency>
-        &lt;!&ndash; https://mvnrepository.com/artifact/org.springframework/spring-tx &ndash;&gt;
-        <dependency>
+        <!-- https://mvnrepository.com/artifact/org.springframework/spring-tx -->
+        <!--<dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-tx</artifactId>
             <version>5.0.0.RELEASE</version>

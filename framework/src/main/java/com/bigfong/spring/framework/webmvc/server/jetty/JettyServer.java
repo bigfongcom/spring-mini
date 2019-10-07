@@ -62,7 +62,7 @@ public class JettyServer {
      * 解析请求并返回响应
      */
     private static void doResponse(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        String url = request.getRequestURI();
+       /* String url = request.getRequestURI();
         RequestMethod requestMethod = RequestMethod.getEnum(request.getMethod());
         log.info("{} {}", requestMethod, url);
         MethodDetail methodDetail = UrlMappingPool.getInstance().getMap(url, requestMethod);
@@ -107,7 +107,7 @@ public class JettyServer {
         Object result = method.invoke(object, params.toArray());
 
         response.setStatus(HttpServletResponse.SC_OK);
-        response.getWriter().print(result);
+        response.getWriter().print(result);*/
     }
 
 }

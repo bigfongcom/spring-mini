@@ -16,7 +16,7 @@ import java.util.Map;
  * @author bigfong
  * @since 2019/10/6
  */
-public abstract class JdbcTemplate {
+public class JdbcTemplate {
     private DataSource dataSource;
 
     public JdbcTemplate(DataSource dataSource) {
@@ -72,7 +72,7 @@ public abstract class JdbcTemplate {
     }
 
 
-    protected PreparedStatement createPrepareStatement(Connection conn, String sql) throws Exception{
+    protected PreparedStatement createPrepareStatement(Connection conn, String sql) throws Exception {
         return conn.prepareStatement(sql);
     }
 
@@ -83,15 +83,56 @@ public abstract class JdbcTemplate {
         return pstm.executeQuery();
     }
 
-    public <T extends Serializable> Object query(String sql, RowMapper<T> rowMapper, Object[] values) throws Exception{
-        return this.executeQuery(sql,rowMapper,values);
+    public <T extends Serializable> Object query(String sql, RowMapper<T> rowMapper, Object[] values) throws Exception {
+        return this.executeQuery(sql, rowMapper, values);
     }
 
-    public List<Map<String,Object>> queryForList(String sql, Object[] args) {
+    public List<Map<String, Object>> queryForList(String sql, Object[] args) {
         return null;
     }
 
-    public Map<String,Object> queryForMap(String countSql, Object[] values) {
+    public Map<String, Object> queryForMap(String countSql, Object[] values) {
         return null;
     }
+
+    public int update(String sql, StringBuffer valStr) {
+        int i = 0;
+        try {
+            //获取连接
+            Connection conn = this.getConnect();
+            //创建语名集
+            PreparedStatement pstm = this.createPrepareStatement(conn, sql);
+            i = pstm.executeUpdate();
+            //关半语句集
+            this.closeStatement(pstm);
+            //关闭连接
+            this.closeConnection(conn);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return i;
+    }
+
+    public int update(String sql, Object[] objects) {
+        int i = 0;
+        try {
+            //获取连接
+            Connection conn = this.getConnect();
+            //创建语名集
+            PreparedStatement pstm = this.createPrepareStatement(conn, sql);
+
+            for (int j = 0; j < objects.length; j++) {
+                pstm.setObject(j+1,objects[j]);
+            }
+            i = pstm.executeUpdate();
+            //关半语句集
+            this.closeStatement(pstm);
+            //关闭连接
+            this.closeConnection(conn);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return i;
+    }
+
 }

@@ -41,7 +41,7 @@ public class StartApplication {
      * @param args
      */
     public static void run(Class<?> primarySource, String[] args) {
-        try {
+        /*try {
             initContext(primarySource); // 依赖注入
             RequestScanner.initMapping(); // 初始化HTTP请求映射
             // 获取服务器配置
@@ -51,14 +51,14 @@ public class StartApplication {
             // 启动HTTP服务器
             if ("jetty".equals(server)) {
                 JettyServer.start(port);
-            /*else if ("nio".equals(server))
-                NioServer.start(port);*/
+            *//*else if ("nio".equals(server))
+                NioServer.start(port);*//*
             }else {
                 throw new RuntimeException("Unknown server type [" + server + "]");
             }
         } catch (IllegalAccessException | InstantiationException | InvocationTargetException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     private static void initContext(Class<?> primarySource) {

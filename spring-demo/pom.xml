@@ -52,12 +52,12 @@
             <version>4.0.1</version>
             <scope>compile</scope>
         </dependency>
-        <dependency>
+       <!-- <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>RELEASE</version>
             <scope>compile</scope>
-        </dependency>
+        </dependency>-->
     </dependencies>
 
     <build>

@@ -193,5 +193,10 @@ public abstract class BaseDaoSupport<T extends Serializable, PK extends Serializ
         if (obj!=null){
             return (T)obj;
         }
+        return null;
+    }
+
+    private <T> Object doLoad(String tableName, String pkCloumn, Object pkValue, RowMapper<T> rowMapper) {
+        return null;
     }
 }

@@ -4,7 +4,9 @@ import com.bigfong.spring.framework.context.ApplicationContext;
 import com.bigfong.spring.framework.webmvc.HandlerAdapter;
 import com.bigfong.spring.framework.webmvc.HandlerMapping;
 import com.bigfong.spring.framework.webmvc.ViewResolver;
-import com.bigfong.spring.framework.webmvc.server.jetty.JettyServer;
+import com.bigfong.spring.framework.webmvc.server.MyTomcat;
+import com.bigfong.spring.framework.webmvc.server.WebServce;
+//import com.bigfong.spring.framework.webmvc.server.jetty.JettyServer;
 import com.bigfong.spring.framework.webmvc.servlet.DispatcherServlet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,6 +43,13 @@ public class StartApplication {
      * @param args
      */
     public static void run(Class<?> primarySource, String[] args) {
+        initContext(primarySource); // 依赖注入
+        //WebServce.getWebserce().start();
+        try {
+            MyTomcat.start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         /*try {
             initContext(primarySource); // 依赖注入
             RequestScanner.initMapping(); // 初始化HTTP请求映射
@@ -62,5 +71,6 @@ public class StartApplication {
     }
 
     private static void initContext(Class<?> primarySource) {
+        //primarySource.
     }
 }

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mapper namespace="com.bigfong.spring.demo.mapper.UserMapper">
+    <!--配置查询所有-->
+    <select id="findAll" resultType="com.bigfong.spring.demo.entity.User">
+        select * from user
+    </select>
+</mapper>

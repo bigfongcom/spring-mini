@@ -70,8 +70,8 @@ public class MyTomcat2 {
             tomcat.getService().addConnector(additionalConnector);
         }
 
-        this.prepareContext(tomcat.getHost(), initializers);
-        return this.getTomcatWebServer(tomcat);
+       /* this.prepareContext(tomcat.getHost(), initializers);
+        return this.getTomcatWebServer(tomcat);*/
     }
 
 

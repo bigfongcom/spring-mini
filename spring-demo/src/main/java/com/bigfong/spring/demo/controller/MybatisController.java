@@ -23,12 +23,12 @@ import javax.servlet.http.HttpServletResponse;
 public class MybatisController {
 
     @Autowired
-    IMybatisService yybatisService;
+    IMybatisService mybatisService;
 
     @RequestMapping("/test")
     public ModelAndView query(HttpServletRequest request, HttpServletResponse response, @RequestParam("name") String name){
         try {
-            yybatisService.test();
+            mybatisService.test();
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -21,7 +21,7 @@ import java.util.Map;
  * @since 2019/10/3
  */
 @Controller
-@RequestMapping("/")
+@RequestMapping("/page")
 public class PageController {
     @Autowired
     private IQueryService queryService;

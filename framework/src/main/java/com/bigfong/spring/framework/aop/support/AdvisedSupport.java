@@ -109,6 +109,10 @@ public class AdvisedSupport {
                         advice.add(afterThrowingAdvice);
                     }
 
+                    /*if (null == advice || advice.isEmpty()){
+                        continue;
+                    }*/
+
                     methodCache.put(m,advice);
                 }
             }

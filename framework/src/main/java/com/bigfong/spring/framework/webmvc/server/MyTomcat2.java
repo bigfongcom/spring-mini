@@ -1,27 +1,14 @@
 package com.bigfong.spring.framework.webmvc.server;
 
-import com.bigfong.spring.framework.webmvc.servlet.TestServlet;
 import org.apache.catalina.Server;
-import org.apache.catalina.Service;
-import org.apache.catalina.WebResourceRoot;
 import org.apache.catalina.connector.Connector;
-import org.apache.catalina.core.StandardContext;
-import org.apache.catalina.core.StandardServer;
-import org.apache.catalina.core.StandardService;
 import org.apache.catalina.startup.Tomcat;
-import org.apache.catalina.webresources.DirResourceSet;
-import org.apache.catalina.webresources.EmptyResourceSet;
-import org.apache.catalina.webresources.StandardRoot;
-import org.apache.coyote.AbstractProtocol;
-import org.apache.tomcat.util.file.ConfigFileLoader;
 import org.apache.tomcat.util.res.StringManager;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;

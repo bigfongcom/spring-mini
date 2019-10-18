@@ -94,12 +94,6 @@
             <artifactId>tomcat-embed-core</artifactId>
             <version>8.5.13</version>
         </dependency>
-        <!--主要获取配置属性信息-->
-        <dependency>
-            <groupId>commons-configuration</groupId>
-            <artifactId>commons-configuration</artifactId>
-            <version>1.10</version>
-        </dependency>
         <!--避免启动出错-->
         <dependency>
             <groupId>tomcat</groupId>
@@ -107,6 +101,13 @@
             <version>5.5.23</version>
         </dependency>
         <!--集成tomcat end-->
+
+        <!--主要获取配置属性信息-->
+        <dependency>
+            <groupId>commons-configuration</groupId>
+            <artifactId>commons-configuration</artifactId>
+            <version>1.10</version>
+        </dependency>
 
         <!--自定义mybatis start-->
         <dependency>

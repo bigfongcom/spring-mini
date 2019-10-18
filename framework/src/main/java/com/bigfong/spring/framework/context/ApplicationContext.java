@@ -2,6 +2,7 @@ package com.bigfong.spring.framework.context;
 
 import com.bigfong.spring.framework.annotation.Autowired;
 import com.bigfong.spring.framework.annotation.Controller;
+import com.bigfong.spring.framework.annotation.Mapper;
 import com.bigfong.spring.framework.annotation.Service;
 import com.bigfong.spring.framework.aop.AopConfig;
 import com.bigfong.spring.framework.aop.AopProxy;
@@ -14,6 +15,7 @@ import com.bigfong.spring.framework.beans.config.BeanPostProcessor;
 import com.bigfong.spring.framework.context.support.BeanDefinitionReader;
 import com.bigfong.spring.framework.context.support.DefaultListableBeanFactory;
 import com.bigfong.spring.framework.core.BeanFactory;
+import com.bigfong.spring.framework.mybatis.utils.SqlSessionUtil;
 import com.bigfong.spring.framework.utils.StringUtil;
 
 import java.io.File;
@@ -118,6 +120,7 @@ public class ApplicationContext extends DefaultListableBeanFactory implements Be
         BeanDefinition beanDefinition = super.beanDefinitionMap.get(beanName);
 
         try {
+            System.out.println("beanName = [" + beanName + "]");
             //通过成通知事件
             BeanPostProcessor beanPostProcessor = new BeanPostProcessor();
             Object instance = instantiateBean(beanDefinition);
@@ -204,7 +207,12 @@ public class ApplicationContext extends DefaultListableBeanFactory implements Be
                 instance = this.factoryBeanObjectCache.get(className);
             }else{
                 Class<?> clazz = Class.forName(className);
-                instance = clazz.newInstance();
+
+                if (clazz.isAnnotationPresent(Mapper.class)){
+                    instance = SqlSessionUtil.getSqlSessionInstance().getMapper(clazz);
+                }else{
+                    instance = clazz.newInstance();
+                }
 
                 //AOP
                 AdvisedSupport config = instantionAopConfig(beanDefinition);

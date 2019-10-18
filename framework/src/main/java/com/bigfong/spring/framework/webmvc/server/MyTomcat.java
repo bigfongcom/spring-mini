@@ -1,8 +1,7 @@
 package com.bigfong.spring.framework.webmvc.server;
 
-import com.bigfong.spring.framework.webmvc.servlet.TestServlet;
+import com.bigfong.spring.framework.webmvc.servlet.TomcatServlet;
 import org.apache.catalina.WebResourceRoot;
-import org.apache.catalina.Wrapper;
 import org.apache.catalina.connector.Connector;
 import org.apache.catalina.core.StandardContext;
 import org.apache.catalina.startup.Tomcat;
@@ -26,7 +25,7 @@ public class MyTomcat {
         Tomcat tomcat = new Tomcat();
         Connector connector = new Connector();
         // 设置绑定端口
-        connector.setPort(8080);
+        connector.setPort(8081);
         tomcat.getService().addConnector(connector);
         tomcat.setConnector(connector);
         tomcat.getHost().setAutoDeploy(false);
@@ -70,9 +69,10 @@ public class MyTomcat {
 
     private static void configureServlets(String contextPath, Tomcat tomcat, StandardContext context) {
         {
-            tomcat.addServlet(contextPath, "test1Name", TestServlet.class.getName());
+            //tomcat.addServlet(contextPath, "tomcatServlet", TestServlet.class.getName());
+            tomcat.addServlet(contextPath, "tomcatServlet", TomcatServlet.class.getName());
             //注意不要忘记设置Servlet路径映射
-            context.addServletMappingDecoded("/*", "test1Name");
+            context.addServletMappingDecoded("/*", "tomcatServlet");
         }
         /*{
             Wrapper wrapper = context.createWrapper();

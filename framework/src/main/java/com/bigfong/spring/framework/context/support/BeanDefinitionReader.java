@@ -1,5 +1,6 @@
 package com.bigfong.spring.framework.context.support;
 
+import com.bigfong.spring.framework.annotation.Mapper;
 import com.bigfong.spring.framework.beans.config.BeanDefinition;
 import com.bigfong.spring.framework.utils.StringUtil;
 
@@ -51,7 +52,8 @@ public class BeanDefinitionReader {
 
     private void doScanner(String scanPackage) {
         //转换为文件路径，实际上是把.换为/
-        URL url = this.getClass().getClassLoader().getResource("/" + scanPackage.replaceAll("\\.", "/"));
+        //"/" +
+        URL url = this.getClass().getClassLoader().getResource(scanPackage.replaceAll("\\.", "/"));
         File classPath = new File(url.getFile());
         for (File file : classPath.listFiles()) {
             if (file.isDirectory()) {
@@ -75,8 +77,8 @@ public class BeanDefinitionReader {
         try {
             for (String className : registyBeanClasses) {
                 Class<?> beanClass = Class.forName(className);
-                //如果是接口跳过
-                if (beanClass.isInterface()){
+                //如果是接口跳过  && !beanClass.isAnnotationPresent(Mapper.class)
+                if (beanClass.isInterface() && !beanClass.isAnnotationPresent(Mapper.class)){
                     continue;
                 }
 

@@ -55,8 +55,10 @@ public class AdvisedSupport {
             cached = methodCache.get(m);
             /*cached = new ArrayList<>();
             cached.add(m);*/
-            //存入缓存
-            this.methodCache.put(m,cached);
+            if (null != cached){
+                //存入缓存
+                this.methodCache.put(m,cached);
+            }
         }
         return cached;
     }
@@ -109,9 +111,9 @@ public class AdvisedSupport {
                         advice.add(afterThrowingAdvice);
                     }
 
-                    /*if (null == advice || advice.isEmpty()){
+                    if (null == advice || advice.isEmpty()){
                         continue;
-                    }*/
+                    }
 
                     methodCache.put(m,advice);
                 }

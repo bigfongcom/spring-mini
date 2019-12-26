@@ -12,7 +12,7 @@
     <artifactId>framework</artifactId>
 
     <properties>
-        <tomcat.version>9.0.19</tomcat.version>
+        <tomcat.version>9.0.30</tomcat.version>
     </properties>
     <dependencies>
         <dependency>
@@ -92,7 +92,7 @@
         <dependency>
             <groupId>org.apache.tomcat.embed</groupId>
             <artifactId>tomcat-embed-core</artifactId>
-            <version>8.5.13</version>
+            <version>9.0.30</version>
         </dependency>
         <!--避免启动出错-->
         <dependency>
